@@ -1,0 +1,200 @@
+import tkinter
+from tkinter import *
+import random
+questions=[
+    "This is sample question 1:",
+    "This is sample question 2:",
+    "This is sample question 3:",
+    "This is sample question 4:",
+    "This is sample question 5:",
+    "This is sample question 6:",
+    "This is sample question 7:",
+    "This is sample question 8:",
+    "This is sample question 9:",
+    "This is sample question 10:",
+]
+answer_choice=[
+    ["1","2","3","4"],
+    ["1","2","3","4"],
+    ["1","2","3","4"],
+    ["1","2","3","4"],
+    ["1","2","3","4"],
+    ["1","2","3","4"],
+    ["1","2","3","4"],
+    ["1","2","3","4"],
+    ["1","2","3","4"],
+    ["1","2","3","4"],
+]
+answers=[1,1,1,1,3,1,0,1,3,3]
+indexes=[]
+user_answer=[]
+def gen():
+    global indexes
+    while(len(indexes)<5):
+        x=random.randint(0,9)
+        if x in indexes:
+            continue
+        else:
+            indexes.append(x)
+            
+def showresult(score):
+    lblquestions.destroy()
+    r1.destroy()
+    r2.destroy()
+    r3.destroy()
+    r4.destroy()
+    labelimage = Label(
+        root,
+        background = "#ffffff",
+        border = 0,
+    )
+    labelimage.pack(pady=(50,30))
+    labelresulttext = Label(
+        root,
+        font = ("Consolas",20),
+        background = "#ffffff",
+    )
+    labelresulttext.pack()
+               
+            
+def calc():
+    global indexes,user_answer,answers
+    x=0
+    score=0
+    for i in indexes:
+        if user_answer[x] == answers[i]:
+            score = score + 5
+        x += 1
+    print(score)
+    showresult(score)
+        
+ques=1
+def selected():
+    global radiovar,user_answer
+    global lblquestions,r1,r2,r3,r4
+    global ques
+    x=radiovar.get()
+    user_answer.append(x)
+    radiovar.set(-1)
+    if ques<5:
+        lblquestions.config(text=questions[indexes[ques]])
+        r1['text']=answer_choice[indexes[ques]][0]
+        r2['text']=answer_choice[indexes[ques]][1]
+        r3['text']=answer_choice[indexes[ques]][2]
+        r4['text']=answer_choice[indexes[ques]][3]
+        ques+=1
+    else:
+        calc()
+    
+    
+
+def startQuiz():
+    global lblquestions,r1,r2,r3,r4
+    lblquestions=Label(
+    root,
+    text=questions[indexes[0]],
+    font=("Consolas",15),
+    width=500,
+    justify="center",
+    wraplength=400,
+    background="white"
+    )
+    lblquestions.pack()
+    global radiovar
+    radiovar=IntVar()
+    radiovar.set(-1)
+    
+    r1=tkinter.Radiobutton(
+    root,
+    text=answer_choice[indexes[0]][0],
+    font=("Times",12),
+    value=0,
+    variable=radiovar,
+    command=selected)
+    r1.pack()
+    
+    r2=tkinter.Radiobutton(
+    root,
+    text=answer_choice[indexes[0]][1],
+    font=("Times",12),
+    value=1,
+    variable=radiovar,
+    command=selected)
+    r2.pack()
+    
+    r3=tkinter.Radiobutton(
+    root,
+    text=answer_choice[indexes[0]][2],
+    font=("Times",12),
+    value=2,
+    variable=radiovar,
+    command=selected)
+    r3.pack()
+    
+    r4=tkinter.Radiobutton(
+    root,
+    text=answer_choice[indexes[0]][3],
+    font=("Times",12),
+    value=3,
+    variable=radiovar,
+    command=selected)
+    r4.pack()
+    
+def startIsPressed():
+    imglabel.destroy()
+    labeltext.destroy()
+    lblInstruction.destroy()
+    lblrules.destroy()
+    img1label.destroy()
+    gen()
+    startQuiz()
+    
+    
+root=tkinter.Tk()
+root.title("QUIZ FINDER")
+root.geometry("700x600")
+root.config(background="white")
+root.resizable(0,0)
+#image
+img=PhotoImage(file="C:\\Users\\anshul kataria\\Desktop\\quiz-logo_2x.png")
+imglabel=Label(root,
+               image=img,
+               background="white")
+imglabel.pack(pady=(40,0))
+#text1
+labeltext=Label(
+        root,
+        text="Quiz Finder",
+        font=("Comic sans MS",24,"bold"),
+        background="white",
+        
+        )
+labeltext.pack(pady=(0,20))
+#button
+img1=PhotoImage(file="C://Users//anshul kataria//Desktop//images.png")
+img1label=Button(root,
+                image=img1,
+                background="white",
+                relief=FLAT,
+                border=0,
+                command=startIsPressed,
+               )
+img1label.pack(pady=(40,0))
+#instructions
+lblInstruction=Label(
+                root,
+                text="Read the Rules and\nClick start Once you are Ready",
+                background="white",
+                font=("Consolas",14),
+                justify="center")
+lblInstruction.pack(pady=(0,40))
+#instruction2
+lblrules=Label(
+                root,
+                text="This quiz contains 10 questions\nYou will get 20 seconds to solve a question\n*****Best of Luck*****",
+                width=100,
+                font=("Times",14),
+                background="black",
+                foreground="yellow")
+lblrules.pack()
+root.mainloop()
